@@ -1,0 +1,14 @@
+apiVersion: iam.openfaas.com/v1
+kind: JwtIssuer
+metadata:
+  name: token.actions.githubusercontent.com
+  namespace: openfaas
+spec:
+  # The issuer URL as published by GitHub Actions' OIDC provider.
+  iss: https://token.actions.githubusercontent.com
+  # Must match the audience requested when fetching the id_token.
+  # Set this to the URL of your OpenFaaS gateway.
+  aud:
+    - https://gateway.example.com
+  # How long the resulting OpenFaaS access token is valid.
+  tokenExpiry: 30m

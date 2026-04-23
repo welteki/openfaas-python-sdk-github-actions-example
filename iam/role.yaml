@@ -1,0 +1,18 @@
+apiVersion: iam.openfaas.com/v1
+kind: Role
+metadata:
+  name: github-actions-deployer
+  namespace: openfaas
+spec:
+  policy:
+    - github-actions-rw
+  condition:
+    StringEqual:
+      # Only accept tokens issued by GitHub Actions.
+      jwt:iss: ["https://token.actions.githubusercontent.com"]
+      # Restrict to a specific GitHub organisation or user.
+      # Replace "your-org" with your GitHub organisation or username.
+      jwt:repository_owner: ["your-org"]
+    StringLike:
+      # Allow any branch. Restrict to "refs/heads/main" for production-only deploys.
+      jwt:ref: ["refs/heads/*"]

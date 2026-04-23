@@ -1,0 +1,20 @@
+apiVersion: iam.openfaas.com/v1
+kind: Policy
+metadata:
+  name: github-actions-rw
+  namespace: openfaas
+spec:
+  statement:
+    - sid: 1-rw-openfaas-fn
+      action:
+        - Function:List
+        - Function:Get
+        - Function:Create
+        - Function:Update
+        - Function:Delete
+        - Namespace:List
+        - Secret:List
+      effect: Allow
+      # Grants access to all functions in the openfaas-fn namespace.
+      # Restrict to specific function names if needed, e.g. "openfaas-fn:my-fn".
+      resource: ["openfaas-fn:*"]

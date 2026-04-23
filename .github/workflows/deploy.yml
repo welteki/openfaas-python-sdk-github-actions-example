@@ -1,0 +1,34 @@
+name: Deploy to OpenFaaS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Required to obtain a GitHub Actions OIDC id_token.
+    # Without this permission the ACTIONS_ID_TOKEN_REQUEST_URL and
+    # ACTIONS_ID_TOKEN_REQUEST_TOKEN environment variables are not set and
+    # token exchange with the OpenFaaS gateway will fail.
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Deploy to OpenFaaS
+        env:
+          OPENFAAS_URL: ${{ vars.OPENFAAS_URL }}
+        run: python deploy.py
