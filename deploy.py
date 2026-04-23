@@ -80,6 +80,26 @@ def main() -> None:
         fn = client.get_function(fn_name, NAMESPACE)
         print(f"  Function '{fn.name}' is ready — image: {fn.image}")
 
+        # ------------------------------------------------------------------
+        # Invoke the env function using a per-function scoped token.
+        #
+        # The env function has jwt_auth enabled, so a plain gateway token is
+        # not sufficient. invoke_function with use_function_auth=True performs
+        # a second token exchange — trading the gateway token for a token
+        # scoped specifically to openfaas-fn:env — before making the call.
+        # ------------------------------------------------------------------
+        print("\nInvoking 'env' (function auth)...")
+        response = client.invoke_function(
+            "env",
+            namespace=NAMESPACE,
+            use_function_auth=True,
+        )
+        print(f"  HTTP status : {response.status_code}")
+        if response.ok:
+            # env prints its environment variables — show first few lines
+            for line in response.text.splitlines()[:8]:
+                print(f"  {line}")
+
 
 if __name__ == "__main__":
     main()

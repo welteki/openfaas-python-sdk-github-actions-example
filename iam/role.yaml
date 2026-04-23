@@ -6,6 +6,7 @@ metadata:
 spec:
   policy:
     - github-actions-rw
+    - github-actions-invoke-env
   condition:
     StringEqual:
       # Only accept tokens issued by GitHub Actions.

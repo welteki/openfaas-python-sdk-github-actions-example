@@ -1,0 +1,15 @@
+apiVersion: iam.openfaas.com/v1
+kind: Policy
+metadata:
+  name: github-actions-invoke-env
+  namespace: openfaas
+spec:
+  statement:
+    - sid: 1-invoke-env
+      action:
+        - Function:Invoke
+      effect: Allow
+      # Scoped to a single function. The gateway will only issue a function-
+      # scoped token for openfaas-fn:env — no other function can be invoked
+      # with this policy.
+      resource: ["openfaas-fn:env"]
