@@ -13,6 +13,12 @@ spec:
       # Restrict to a specific GitHub organisation or user.
       # Replace "your-org" with your GitHub organisation or username.
       jwt:repository_owner: ["your-org"]
+      # Restrict to a specific repository. This prevents any other repository
+      # under the same owner from obtaining access.
+      # Replace with your repository slug.
+      jwt:repository: ["your-org/your-repo"]
     StringLike:
-      # Allow any branch. Restrict to "refs/heads/main" for production-only deploys.
+      # Allow any branch. Pull request refs (refs/pull/*) are implicitly
+      # excluded because they do not match refs/heads/*.
+      # Restrict to "refs/heads/main" for production-only deploys.
       jwt:ref: ["refs/heads/*"]
