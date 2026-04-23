@@ -1,2 +1,2 @@
-openfaas-sdk
+git+https://github.com/welteki/openfaas-python-sdk.git@initial-sdk
 requests
